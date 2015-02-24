@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 function checkFile {
     fdate=`GetFileInfo -m "$1"`
     parseddate=(`echo $fdate | sed -e 's/[:/]/ /g'`)
@@ -15,15 +17,18 @@ function sortfile {
 }
 # rename any file with space(s) in filename
 
+shopt -s nullglob
 for f in *\ *; do
     mv "$f" "${f// /_}";
 done
 
 # do the sorting
 
-for image in ~/Desktop/digisteve/*.jpg; do
+for image in {*.jpg,*.JPG}; do
     sortfile $image
 done
+
+# remove the by-product of "-" folder
 
 if [ -d "-" ]; then
     rmdir '-'
